@@ -11,12 +11,13 @@ export default function Graph () {
 
     const { data, error, isLoading } = useSWR('/api/user/top/tracks', fetcher)
 
+
     return (
         <div>
             <h1 className="font-geistMono">Hi</h1>
-            {!isLoading && (
-                <p>{data.items[10].name}</p>
-            )}
+            {!isLoading && data.items.map(({name, id, artists, popularity}) => (
+                <p key={id}>{name}, {artists[0].name}, [{popularity}]</p>
+            ))}
             <button onClick={() => signOut()}>Log out</button>
         </div>
     )

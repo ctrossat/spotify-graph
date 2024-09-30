@@ -4,8 +4,6 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route.js"
 export async function GET(request, {params}) {
   const session = await getServerSession(authOptions);
 
-  console.log(session);
-  
   if(session) {
     const response = await fetch(`${process.env.SPOTIFY_API_URL}/me/top/${params.type}`, {
       headers: {

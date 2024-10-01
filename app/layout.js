@@ -28,7 +28,7 @@ export default async function RootLayout({login, graphs}) {
   return (
     <SessionWrapper>
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-gray-950 dark:text-[#ededed]`}>
         {session ? graphs : login}
       </body>
     </html>

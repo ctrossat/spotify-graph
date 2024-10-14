@@ -9,13 +9,14 @@ import { useState } from 'react';
 
 export default function Graph() {
 
-
-
     const { data: session } = useSession();
 
     console.log(session);
 
     const [term, setTerm] = useState('short_term')
+    const [selectedArtist, setSelectedArtist] = useState(null)
+    console.log(selectedArtist);
+    
 
     //fetch wrapper for SWR use
     const fetcher = (...args) => fetch(...args).then(res => res.json())
@@ -39,8 +40,10 @@ export default function Graph() {
         
         //reformat new obtained data in an object usable by the DonutChart object
         let returnData = []
-        Object.entries(parsedData).forEach((key) => (key[1] > 1 && returnData.push({ name: key[0], amount: key[1] })))
-        return returnData;
+        // Artist that only appear once in the top 50 are put in here, unused currently in the display but is calculated anyway cuz why not
+        let otherArtists = 0
+        Object.entries(parsedData).forEach((key) => (key[1] > 1 ? returnData.push({ name: key[0], amount: key[1] }) : otherArtists++))
+        return [...returnData];
     }
 
     return (
@@ -74,18 +77,25 @@ export default function Graph() {
             </span>
 
             {!isLoading &&
+                <>
                 <DonutChart
                     data={donutData(data).sort((a,b) => a != false && b.amount - a.amount)}
                     className='mb-6'
-                    variant="pie"
                     category="name"
+                    variant = {'pie'}
                     value="amount"
+                    onValueChange={(v) => v ? setSelectedArtist(v.categoryClicked) : setSelectedArtist(null)}
                     colors={['violet', 'fuchsia', 'emerald', 'blue']}
                 />
+                <p className='font-geistSans text-center mb-10'>
+                    Artists in your top 50 songs <br/> 
+                    <span className='font-geistMono text-sm tracking-tight'>only those with multiple songs are displayed</span>
+                </p> 
+                </>
             }
 
 
-            <TableRoot className='w-fit'>
+            <TableRoot>
                 <Table>
                     <TableCaption>Your top 50 songs</TableCaption>
                     <TableHead>
@@ -96,13 +106,19 @@ export default function Graph() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {!isLoading && data.items.map(({ id, name, artists }, index) => (
-                            <TableRow key={id}>
-                                <TableCell>{name}</TableCell>
-                                <TableCell>{artists.map(({ name }) => name).join(' / ')}</TableCell>
-                                <TableCell>{index + 1}</TableCell>
-                            </TableRow>
-                        ))}
+                        {!isLoading && data.items.map(({ id, name, artists }, index) => {
+                            //if selectedArtist = null then render all
+                            //if selectedArtist has a value render if ANY of the artist matches
+                            if (!selectedArtist || artists.some(({name}) => name == selectedArtist)) {
+                                return (
+                                    <TableRow key={id}>
+                                        <TableCell>{name}</TableCell>
+                                        <TableCell>{artists.map(({ name }) => name).join(' / ')}</TableCell>
+                                        <TableCell>{index + 1}</TableCell>
+                                    </TableRow>
+                                )
+                            }
+                        })}
                     </TableBody>
                 </Table>
             </TableRoot>

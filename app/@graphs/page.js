@@ -76,8 +76,8 @@ export default function Graph() {
                 </span>
             </span>
 
-            {!isLoading &&
-                <>
+            {!isLoading 
+            ?
                 <DonutChart
                     data={donutData(data).sort((a,b) => a != false && b.amount - a.amount)}
                     className='mb-6'
@@ -87,13 +87,24 @@ export default function Graph() {
                     onValueChange={(v) => v ? setSelectedArtist(v.categoryClicked) : setSelectedArtist(null)}
                     colors={['violet', 'fuchsia', 'emerald', 'blue']}
                 />
-                <p className='font-geistSans text-center mb-10'>
-                    Artists in your top 50 songs <br/> 
-                    <span className='font-geistMono text-sm tracking-tight'>only those with multiple songs are displayed</span>
-                </p> 
-                </>
+            : 
+                <DonutChart
+                    data={[{ name: 'loading', amount: 1 }]}
+                    className='mb-6'
+                    category="name"
+                    variant = {'pie'}
+                    value="amount"
+                    showTooltip = {false}
+                    colors={['gray']}
+                />
+
             }
 
+            <p className='font-geistSans text-center mb-10'>
+                <span> {!isLoading ? 'Artists in your top 50 songs' : 'Retrieving data from Spotify API'} </span>
+                <br/> 
+                <span className='font-geistMono text-sm tracking-tight'>{!isLoading ? 'only those with multiple songs are displayed' : 'Please wait'}</span>
+            </p> 
 
             <TableRoot>
                 <Table>

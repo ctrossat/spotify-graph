@@ -1,7 +1,7 @@
 'use client' // Error components must be Client Components
  
 import { useEffect } from 'react'
-import {logOut} from "next-auth/react"
+import {signOut} from "next-auth/react"
 
 export default function Error({ error, reset }) {
   useEffect(() => {
@@ -12,7 +12,7 @@ export default function Error({ error, reset }) {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <h2>An error occured</h2>
-      <button onClick={() => logOut()}>Log out</button>
+      <button onClick={() => signOut()}>Sign out</button>
     </div>
   )
 }

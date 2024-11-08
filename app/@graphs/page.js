@@ -48,9 +48,9 @@ export default function Graph() {
 
     return (
         <div className='flex flex-col items-center px-10'>
-            <span className='flex items-center justify-between w-full mb-4 mt-2'>
-                <h2 className='font-geistSans font-medium'>Connected as {isLoading ? '....' : session.user.name}</h2>
-                <span className='flex items-center'>
+            <span className=' flex sm:items-center justify-between w-full mb-4 mt-2'>
+                <h2 className='font-geistSans font-medium my-4 sm:py-0'>Connected as {isLoading ? '....' : session.user.name}</h2>
+                <span className='flex items-end sm:items-center flex-col-reverse sm:flex-row'>
                     <Select defaultValue="short_term" onValueChange={setTerm}>
                         <SelectTrigger className="mx-auto h-fit">
                             <SelectValue placeholder="Select" />
@@ -105,34 +105,35 @@ export default function Graph() {
                 <br/> 
                 <span className='font-geistMono text-sm tracking-tight'>{!isLoading ? 'only those with multiple songs are displayed' : 'Please wait'}</span>
             </p> 
-
-            <TableRoot>
-                <Table>
-                    <TableCaption>Your top 50 songs</TableCaption>
-                    <TableHead>
-                        <TableRow>
-                            <TableHeaderCell>Name</TableHeaderCell>
-                            <TableHeaderCell>Artists</TableHeaderCell>
-                            <TableHeaderCell>Number</TableHeaderCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {!isLoading && data.items.map(({ id, name, artists }, index) => {
-                            //if selectedArtist = null then render all
-                            //if selectedArtist has a value render if ANY of the artist matches
-                            if (!selectedArtist || artists.some(({name}) => name == selectedArtist)) {
-                                return (
-                                    <TableRow key={id}>
-                                        <TableCell>{name}</TableCell>
-                                        <TableCell>{artists.map(({ name }) => name).join(' / ')}</TableCell>
-                                        <TableCell>{index + 1}</TableCell>
-                                    </TableRow>
-                                )
-                            }
-                        })}
-                    </TableBody>
-                </Table>
-            </TableRoot>
+            <div className='grid max-w-full overflow-x-scroll'>
+                <TableRoot>
+                    <Table>
+                        <TableCaption>Your top 50 songs</TableCaption>
+                        <TableHead>
+                            <TableRow>
+                                <TableHeaderCell>Name</TableHeaderCell>
+                                <TableHeaderCell>Artists</TableHeaderCell>
+                                <TableHeaderCell>Number</TableHeaderCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {!isLoading && data.items.map(({ id, name, artists }, index) => {
+                                //if selectedArtist = null then render all
+                                //if selectedArtist has a value render if ANY of the artist matches
+                                if (!selectedArtist || artists.some(({name}) => name == selectedArtist)) {
+                                    return (
+                                        <TableRow key={id}>
+                                            <TableCell>{name}</TableCell>
+                                            <TableCell>{artists.map(({ name }) => name).join(' / ')}</TableCell>
+                                            <TableCell>{index + 1}</TableCell>
+                                        </TableRow>
+                                    )
+                                }
+                            })}
+                        </TableBody>
+                    </Table>
+                </TableRoot>
+            </div>
         </div>
     )
 }

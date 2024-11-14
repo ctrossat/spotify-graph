@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Spotify-Graph
 
-## Getting Started
+Small web-app that shows graphical information about your spotify account. Using Next-Auth and Tremor.
 
-First, run the development server:
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [License](#license)
+
+## Features
+
+- [ ] Displays most listened song over different timespans.
+- [ ] Securely connect with Spotify API with [NextAuth](https://next-auth.js.org) and Oath2 protocol
+- [ ] Resfresh Token implementation for optimal user experience
+- [ ] Dynamic client data fectching using [SWR](https://swr.vercel.app)
+- [ ] Data displayed with the use of [Tremor](https://tremor.so) components
+
+## Installation
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (version >= 14.x.x recommended)
+- [Yarn](https://classic.yarnpkg.com/en/docs/install) or [npm](https://www.npmjs.com/get-npm)
+- A **Spotify app**, see the 'Create an app' section of [this documentation](https://developer.spotify.com/documentation/web-api/tutorials/getting-started)
+  
+### Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/ctrossat/spotify-graph.git
+cd spotify-graph
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install Dependencies
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Using Yarn:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+yarn install
+```
 
-## Learn More
+Or using npm:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Create a `.env` file in the root directory and add your variables as shown below:
 
-## Deploy on Vercel
+```plaintext
+NEXTAUTH_SECRET=your_nextauth_secret (see https://next-auth.js.org/configuration/options#nextauth_secret)
+NEXTAUTH_URL=http://localhost:3000/
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+SPOTIFY_CLIENT_ID=your_spotify_id
+SPOTIFY_CLIENT_SECRET= your_spotify_secret
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+SPOTIFY_API_URL=https://api.spotify.com/v1
+```
+
+## Usage
+
+### Running the Development Server
+
+```bash
+yarn dev
+# or
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to see the application in action.
+
+### Building for Production
+
+```bash
+yarn build
+# or
+npm run build
+```
+
+To serve the production build locally:
+
+```bash
+yarn start
+# or
+npm run start
+```
+
+## Project Structure
+
+```
+├── /app            # Page components and API routes (Next.js app routing)
+├── /components     # Reusable components
+  ├── /tremor       # Components from Tremor library
+├── /lib            # Code snippets
+└── README.md
+```
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
